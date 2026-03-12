@@ -12,8 +12,10 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import ScrollAnimationWrapper from '../components/landing/ScrollAnimationWrapper';
 import NovusChatbotLanding from '../components/landing/NovusChatbotLanding';
+import DemoBookingModal from '../components/landing/DemoBookingModal';
 import Footer from '../components/landing/Footer';
 import { ThemeProvider } from '../components/ThemeContext';
+import FaviconUpdater from '../components/FaviconUpdater';
 
 const DNAStrand = ({ className }) => (
   <div className={`absolute w-full h-full ${className}`} style={{ perspective: '400px' }}>
@@ -46,15 +48,27 @@ const DNAStrand = ({ className }) => (
 
 function HomeContent() {
   const [showChatbot, setShowChatbot] = useState(false);
+  const [showDemoModal, setShowDemoModal] = useState(false);
   const theme = 'dark';
   const chatbotRef = useRef(null);
-
 
   const handleSeePlans = () => {
     const pricingSection = document.getElementById('pricing-section');
     if (pricingSection) {
       pricingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+  };
+
+  const handleBookDemo = () => {
+    setShowDemoModal(true);
+  };
+
+  const handleTryFree = () => {
+    setShowDemoModal(true);
+  };
+
+  const handleBookCall = () => {
+    setShowDemoModal(true);
   };
 
   const handleOpenChatbot = () => {
@@ -138,6 +152,7 @@ function HomeContent() {
         <div className="relative z-10">
           <HeroSection
             onSeePlans={handleSeePlans}
+            onTryDemo={handleBookDemo}
             theme={theme}
           />
         </div>
@@ -169,6 +184,8 @@ function HomeContent() {
           <ScrollAnimationWrapper>
             <PricingSection 
               theme={theme}
+              onTryFree={handleTryFree}
+              onBookCall={handleBookCall}
             />
           </ScrollAnimationWrapper>
         </div>
@@ -198,6 +215,7 @@ function HomeContent() {
                 <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 ml-2 sm:ml-3" />
               </Button>
               <Button
+                onClick={handleBookCall}
                 variant="outline"
                 size="lg"
                 className={`backdrop-blur-sm border-2 border-blue-400 px-8 sm:px-12 py-5 sm:py-6 text-lg sm:text-xl font-semibold rounded-xl w-full sm:w-auto ${
@@ -231,6 +249,11 @@ function HomeContent() {
         isOpen={showChatbot}
         onToggle={() => setShowChatbot(!showChatbot)}
       />
+
+      <DemoBookingModal
+        open={showDemoModal}
+        onOpenChange={setShowDemoModal}
+      />
     </div>
   );
 }
@@ -238,6 +261,7 @@ function HomeContent() {
 export default function Home() {
   return (
     <ThemeProvider>
+      <FaviconUpdater />
       <HomeContent />
     </ThemeProvider>
   );
