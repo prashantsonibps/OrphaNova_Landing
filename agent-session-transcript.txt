@@ -1,0 +1,106 @@
+OrphaNova Landing (Base44 → Local) — Agent Session Transcript / Work Log
+
+Candidate: Prashant Soni
+Project: OrphaNova_Landing (Vite + React)
+Workspace: /Users/prashantsoni/Desktop/OrphaNova_Migration/OrphaNova_Landing
+Repo status at time: Not a git repo (local folder)
+Goal: Remove Base44 dependency for landing-only site; keep only Home page; remove auth + dashboard; ensure app renders locally.
+
+SUMMARY OF OUTCOMES
+- Disabled Base44 auth requirement in the SDK client for local landing usage.
+- Removed landing “Sign In” redirect/auth UX from the header UI.
+- Deleted the Dashboard page and related dashboard components.
+- Removed routing and layout dependencies on the Dashboard.
+- Fixed blank screen by restoring the “/” route and ensuring main.jsx renders the router (Pages) instead of App.
+- Identified remaining Base44-hosted assets: images are still loaded from Base44’s Supabase storage URLs, not via the Base44 client.
+
+TIMELINE (HIGH-SIGNAL)
+
+1) Problem: Base44 app brought locally; auth blocking landing usage
+- Located Base44 client initialization at: src/api/base44Client.js
+- Observed appId configured and requiresAuth originally forcing authentication.
+
+Action taken:
+- Updated Base44 client config to temporarily disable auth requirement:
+  src/api/base44Client.js: requiresAuth: true → requiresAuth: false
+
+2) Problem: Landing page still had “Sign In”/auth UX
+- Located landing header component: src/components/landing/FloatingHeader.jsx
+- Found a handleSignIn() redirect to: https://lab.orphanova.com?theme=...
+
+Actions taken:
+- Removed handleSignIn function
+- Removed “Sign In” <Button />
+- Removed unused LogIn icon import
+
+3) Requirement change: “I don’t need Dashboard page; remove/delete all dashboard files”
+Files deleted:
+- src/pages/Dashboard.jsx
+- src/components/dashboard/** (multiple dashboard feature components and subfolders)
+- Removed the src/components/dashboard/ directory
+- Removed src/components/auth/QuestionnaireModal.jsx (auth-related modal used previously)
+
+References cleanup:
+- Updated router config to remove dashboard routes/imports in: src/pages/index.jsx
+- Simplified Layout to landing-only rendering (removed user fetch/logout/sidebar/nav):
+  src/components/Layout.jsx now renders children only
+
+4) Problem: After removing dashboard, “nothing is visible on screen”
+Root causes found:
+- src/pages/index.jsx had no route for “/” (only “/Home”), so initial load matched nothing.
+- src/main.jsx was rendering <App /> instead of the router (Pages).
+
+Actions taken:
+- src/pages/index.jsx: added route for “/” that renders <Home />
+- src/main.jsx: changed root render to <Pages /> and imported Pages from ./pages
+
+KEY FILES INVOLVED (BY PURPOSE)
+
+Routing / entrypoint:
+- src/main.jsx (root render target)
+- src/pages/index.jsx (Router + Routes definition)
+- src/pages/Home.jsx (Landing page)
+
+Landing UI:
+- src/components/landing/FloatingHeader.jsx (auth button removed)
+
+Removed:
+- src/pages/Dashboard.jsx
+- src/components/dashboard/** (directory removed)
+- src/components/auth/QuestionnaireModal.jsx
+
+CURRENT STATE OF IMAGES (IMPORTANT FOR “NO BASE44 RELIANCE”)
+
+Images are visible because they are fetched directly via hardcoded URLs pointing to Supabase storage used by Base44, for example:
+- https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/...
+
+These Supabase image URLs are referenced in:
+- src/components/ThemeContext.jsx (theme logos)
+- src/components/landing/HeroSection.jsx (trusted-by logos)
+- src/components/landing/FloatingHeader.jsx (logo)
+- src/components/landing/WhyNowSection.jsx (graph image)
+- src/components/landing/NovusChatbotLanding.jsx (chat header logo)
+- src/components/landing/UniqueSection.jsx (workflow image)
+- src/components/landing/ChallengeSolutionSection.jsx (illustration)
+
+Conclusion:
+- Images are NOT coming from the Base44 client SDK. They are loaded via standard <img src="https://..."> URLs from Base44’s storage backend.
+
+NEXT STEPS (TO FULLY REMOVE BASE44 DEPENDENCY)
+- Download each Supabase-hosted image
+- Store locally inside the repo (e.g., public/assets/images/)
+- Replace Supabase URLs in code with local asset paths
+- Optionally remove @base44/sdk dependency if nothing else uses it
+
+APPENDIX: SUPABASE IMAGE URL INVENTORY (FROM CODE)
+- Dark logo: .../ee6ddf117_ChatGPTImageNov12202509_01_55PM.png
+- Light logo: .../af115b481_OrphaNovaHealthcareStartupLogo4.png
+- Trusted-by logos:
+  .../27dfb3d5d_Untitleddesign2.png
+  .../20cbca011_Untitleddesign3.png
+  .../923e6e66f_Untitleddesign4.png
+  .../470d549e7_Icahn_School_of_Medicine_at_Mount_Sinai_logosvg.png
+- Graph: .../a3b2dc28f_image.png
+- Workflow: .../16ce02699_Gemini_Generated_Image_xs59fxs59fxs59fx.png
+- Illustration: .../6bdd314db_ChatGPTImageAug9202509_06_56PM.png
+
