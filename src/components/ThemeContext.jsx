@@ -1,11 +1,26 @@
-import React, { createContext, useContext } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const theme = 'dark';
+  const [theme, setTheme] = useState('dark');
 
-  const toggleTheme = () => {};
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('orphanova-theme');
+    if (savedTheme === 'dark' || savedTheme === 'light') {
+      setTheme(savedTheme);
+      return;
+    }
+
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setTheme(prefersDark ? 'dark' : 'light');
+  }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+    localStorage.setItem('orphanova-theme', nextTheme);
+  };
 
   const getLogo = () => {
     return theme === 'dark'

@@ -14,7 +14,7 @@ import ScrollAnimationWrapper from '../components/landing/ScrollAnimationWrapper
 import NovusChatbotLanding from '../components/landing/NovusChatbotLanding';
 import DemoBookingModal from '../components/landing/DemoBookingModal';
 import Footer from '../components/landing/Footer';
-import { ThemeProvider } from '../components/ThemeContext';
+import { ThemeProvider, useTheme } from '../components/ThemeContext';
 import FaviconUpdater from '../components/FaviconUpdater';
 
 const DNAStrand = ({ className }) => (
@@ -49,7 +49,7 @@ const DNAStrand = ({ className }) => (
 function HomeContent() {
   const [showChatbot, setShowChatbot] = useState(false);
   const [showDemoModal, setShowDemoModal] = useState(false);
-  const theme = 'dark';
+  const { theme } = useTheme();
   const chatbotRef = useRef(null);
 
   const handleSeePlans = () => {
