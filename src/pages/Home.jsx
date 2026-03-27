@@ -97,25 +97,6 @@ function HomeContent() {
           --color-card-border: rgba(71, 85, 105, 1);
           --color-footer-bg: rgba(15, 23, 42, 0.95);
         }
-        
-        .theme-light {
-          --color-bg-primary: #ffffff;
-          --color-bg-gradient-from: #f8fafc;
-          --color-bg-gradient-via: #dbeafe;
-          --color-bg-gradient-to: #f1f5f9;
-          --color-text-primary: #0f172a;
-          --color-text-secondary: #1e293b;
-          --color-text-tertiary: #475569;
-          --color-orb-blue: rgba(59, 130, 246, 0.08);
-          --color-orb-cyan: rgba(6, 182, 212, 0.08);
-          --color-orb-indigo: rgba(99, 102, 241, 0.05);
-          --color-dna-1: rgba(59, 130, 246, 0.3);
-          --color-dna-2: rgba(6, 182, 212, 0.3);
-          --color-card-bg: rgba(255, 255, 255, 0.8);
-          --color-card-border: rgba(226, 232, 240, 1);
-          --color-footer-bg: rgba(248, 250, 252, 0.95);
-        }
-
         /* DNA Animation */
         @keyframes dna-rotate {
           from { transform: rotateY(0deg); }
