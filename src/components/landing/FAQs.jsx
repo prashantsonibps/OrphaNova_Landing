@@ -8,28 +8,34 @@ export default function FAQs({ theme }) {
 
   const faqs = [
     {
-      question: "Why does NOVUS AI appear as a co-author in drafts?",
-      answer: "By default, NOVUS appears as a co-author because it genuinely contributes to the scientific reasoning and text. As AI starts shaping real discoveries, IP around model-generated insight is becoming a real issue, we’re building for that future. In the Advanced Plan, you can fully customize or remove authorship and export a clean manuscript."
+      question: 'What does OrphaNova actually do?',
+      answer:
+        'OrphaNova takes a rare-disease name and runs the research pipeline end to end. It scans literature, extracts disease-gene-drug relationships, validates them against sources like Open Targets, UniProt, AlphaFold, PubChem, and ClinicalTrials.gov, then turns the strongest signals into hypotheses, experiment plans, and paper-ready drafts.'
     },
     {
-      question: "How does NOVUS AI \'Simulate\' experiments?",
-      answer: "It doesn’t fabricate data. NOVUS runs mechanistic reasoning over your evidence graph to predict plausible outcomes, surface assumptions, and highlight uncertainty. Think of it as a high-precision hypothesis engine, not a virtual experiment."
+      question: 'How is this different from a general-purpose AI copilot?',
+      answer:
+        'This is not just a chat wrapper around papers. OrphaNova connects reasoning to a rare-disease workflow and live biomedical infrastructure: PubMed for literature, Open Targets for associations, UniProt for protein context, AlphaFold for structures, PubChem for compounds, and ClinicalTrials.gov for trial context. The goal is not generic summaries, but evidence-backed scientific direction.'
     },
     {
-      question: "Can OrphaNova handle ultra-rare diseases with only a few papers?",
-      answer: "Yes. It's built for low-data environments and constructs mechanistic chains from whatever evidence exists, highlighting uncertainty instead of guessing."
+      question: 'Can OrphaNova work on ultra-rare or low-data diseases?',
+      answer:
+        'Yes. The whole point is to help in places where evidence is sparse and discovery is painfully slow. OrphaNova starts from whatever literature exists, then enriches that signal with protein data, structure, compounds, and trial context so a team can move from fragmented clues to a grounded research direction faster.'
     },
     {
-      question: "Are my files used to train models?",
-      answer: "No. Your data never trains any shared model. It stays inside your workspace, and in the Advanced Plan you can disable all external calls entirely."
+      question: 'What happens after a relationship looks promising?',
+      answer:
+        'Once a relationship is validated, OrphaNova can pull the relevant protein structure, move into hypothesis generation, and help design experiments around the evidence. That includes compound context from PubChem, ADMET and docking workflows through Tamarind Bio, screening logic through Modal and RDKit, and existing study context from ClinicalTrials.gov.'
     },
     {
-      question: "How does the disease knowledge graph help my work?",
-      answer: "It unifies genes, variants, pathways, phenotypes, interventions, and case details into one evidence map so you can ask targeted scientific questions and get grounded, citation-linked answers instantly."
+      question: 'What kinds of outputs can the platform generate?',
+      answer:
+        'The output is meant to be useful for real research work, not just reading. Teams can get evidence-backed relationship maps, validated target and compound context, experiment plans, and full drafts in formats like arXiv, Nature, Cell, NIH grant, or conference style, with export paths such as PDF or LaTeX.'
     },
     {
-      question: "What makes OrphaNova unique?",
-      answer: "OrphaNova combines every type of rare-disease evidence into one reasoning system  literature, case reports, registries, and the structured disease maps we originally built in OrphanAtlas. OrphanAtlas acts as the curated backbone, and OrphaNova adds the AI layer that can actually reason over that data. This pairing gives researchers context and clarity no standalone LLM or database can provide."
+      question: 'How does OrphaNova keep the work grounded in real science?',
+      answer:
+        'The system is designed to keep moving back to evidence instead of floating into unsupported text. Literature findings are enriched with structured biomedical sources, hypotheses are generated from validated relationships, and downstream outputs are tied to the same pipeline data. That is why the product is built around validation, structures, compounds, and experiments, not just prose.'
     }
   ];
 

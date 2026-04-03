@@ -1,240 +1,443 @@
-import React, { useState, useRef } from 'react';
-import HeroSection from '../components/landing/HeroSection';
-import HeroAnimation from '../components/landing/HeroAnimation';
-import MissionSection from '../components/landing/MissionSection';
-import LabsSection from '../components/landing/LabsSection';
-import PricingSection from '../components/landing/PricingSection';
-import FAQs from '../components/landing/FAQs';
-import FloatingHeader from '../components/landing/FloatingHeader';
-import UniqueSection from '../components/landing/UniqueSection';
-import WhyNowSection from '../components/landing/WhyNowSection';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight, CalendarDays, FileText, FlaskConical, Network, Search, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
-import ScrollAnimationWrapper from '../components/landing/ScrollAnimationWrapper';
-import NovusChatbotLanding from '../components/landing/NovusChatbotLanding';
-import DemoBookingModal from '../components/landing/DemoBookingModal';
+import FloatingHeader from '../components/landing/FloatingHeader';
 import Footer from '../components/landing/Footer';
+import FAQs from '../components/landing/FAQs';
+import BiomedicalHeroVisual from '../components/landing/BiomedicalHeroVisual';
 import { ThemeProvider, useTheme } from '../components/ThemeContext';
 import FaviconUpdater from '../components/FaviconUpdater';
 
-const DNAStrand = ({ className }) => (
-  <div className={`absolute w-full h-full ${className}`} style={{ perspective: '400px' }}>
-    <div className="absolute w-full h-full animate-dna-rotate">
-      {[...Array(20)].map((_, i) => (
-        <div 
-          key={`dot1-${i}`} 
-          className="absolute w-2 h-2 dna-dot-1 rounded-full"
-          style={{
-            left: '50%',
-            top: `${5 + i * 4.5}%`,
-            transform: `translateX(-50%) rotateY(${i * 36}deg) translateZ(80px)`
-          }}
-        />
-      ))}
-      {[...Array(20)].map((_, i) => (
-        <div 
-          key={`dot2-${i}`} 
-          className="absolute w-2 h-2 dna-dot-2 rounded-full"
-          style={{
-            left: '50%',
-            top: `${5 + i * 4.5}%`,
-            transform: `translateX(-50%) rotateY(${i * 36 + 180}deg) translateZ(80px)`
-          }}
-        />
-      ))}
-    </div>
-  </div>
-);
+const calendarLink = 'https://calendar.notion.so/meet/prashantsonibps/pkxx64o8n';
+const appLink = 'https://lab.orphanova.com';
+
+const heroFacts = [
+  { value: '400M+', label: 'patients living with rare diseases worldwide' },
+  { value: '7,000+', label: 'conditions still waiting for focused drug discovery' },
+  { value: 'Minutes', label: 'from disease prompt to paper-ready direction' },
+];
+
+const principles = [
+  'Start with a disease name and assemble a living research surface across literature, genes, proteins, compounds, and trial context.',
+  'Validate each lead against biomedical infrastructure researchers already trust, including Open Targets, UniProt, AlphaFold, PubChem, and ClinicalTrials.gov.',
+  'Move from evidence extraction to testable hypotheses, experiment plans, and manuscript-ready writing inside one continuous workflow.',
+];
+
+const workflowSteps = [
+  {
+    number: '01',
+    title: 'Disease input and literature scan',
+    text: 'Enter a rare disease, question, or starting dataset and let NOVUS map the paper trail, mechanisms, and scientific background.',
+    icon: Search,
+  },
+  {
+    number: '02',
+    title: 'Evidence extraction and validation',
+    text: 'Pull relationships out of the literature and enrich them with target scores, protein data, structural context, and compound evidence.',
+    icon: Network,
+  },
+  {
+    number: '03',
+    title: 'Hypothesis and experiment design',
+    text: 'Turn validated signals into testable hypotheses, candidate compounds, and concrete next-step experiments grounded in the evidence graph.',
+    icon: FlaskConical,
+  },
+  {
+    number: '04',
+    title: 'Paper-ready outputs',
+    text: 'Draft manuscripts, grant-style writeups, and research summaries that still point back to the underlying scientific inputs.',
+    icon: FileText,
+  },
+];
+
+const integrations = [
+  {
+    name: 'PubMed',
+    kind: 'wordmark',
+    variant: 'pubmed',
+  },
+  {
+    name: 'Open Targets',
+    kind: 'image',
+    src: '/brands/open-targets.svg',
+    alt: 'Open Targets logo',
+    className: 'h-7 sm:h-8 logo-asset--open-targets',
+  },
+  {
+    name: 'UniProt',
+    kind: 'image',
+    src: '/brands/uniprot-wide.png',
+    alt: 'UniProt logo',
+    className: 'h-10 sm:h-11 logo-asset--uniprot',
+  },
+  {
+    name: 'PubChem',
+    kind: 'image',
+    src: '/brands/pubchem.svg',
+    alt: 'PubChem logo',
+    className: 'h-9 sm:h-10 logo-asset--pubchem',
+  },
+  {
+    name: 'ClinicalTrials.gov',
+    kind: 'wordmark',
+    variant: 'clinicaltrials',
+  },
+  {
+    name: 'BioRender',
+    kind: 'image',
+    src: '/brands/biorender-white.svg',
+    alt: 'BioRender logo',
+    className: 'h-6 sm:h-7 logo-asset--biorender',
+  },
+  {
+    name: 'Tamarind Bio',
+    kind: 'lockup',
+    variant: 'tamarind',
+  },
+  {
+    name: 'AlphaFold DB',
+    kind: 'lockup',
+    variant: 'alphafold',
+  },
+];
+
+const capabilities = [
+  {
+    title: 'Evidence-grounded by default',
+    text: 'The output is useful because the reasoning stays tied to real literature, structured evidence, protein context, and trial signals.',
+  },
+  {
+    title: 'Built for rare-disease science',
+    text: 'OrphaNova is designed for neglected biology, sparse data, and high-friction discovery work rather than generic enterprise chat workflows.',
+  },
+  {
+    title: 'From discovery to draft',
+    text: 'One pipeline can move a team from literature review to experimental direction and manuscript-quality writing without losing context.',
+  },
+];
+
+function Reveal({ children, className = '', delay = 0 }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.22 }}
+      transition={{ duration: 0.7, delay, ease: 'easeOut' }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 function HomeContent() {
-  const [showChatbot, setShowChatbot] = useState(false);
-  const [showDemoModal, setShowDemoModal] = useState(false);
   const { theme } = useTheme();
-  const chatbotRef = useRef(null);
-
-  const handleSeePlans = () => {
-    const pricingSection = document.getElementById('pricing-section');
-    if (pricingSection) {
-      pricingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
-  const handleBookDemo = () => {
-    setShowDemoModal(true);
-  };
-
-  const handleTryFree = () => {
-    setShowDemoModal(true);
-  };
-
-  const handleBookCall = () => {
-    setShowDemoModal(true);
-  };
-
-  const handleOpenChatbot = () => {
-    setShowChatbot(true);
-  };
+  const tickerLogos = [...integrations, ...integrations];
 
   return (
-    <div className={`relative min-h-screen theme-${theme}`}>
-      {/* Theme Styles */}
-      <style>{`
-        /* Theme Variables */
-        .theme-dark {
-          --color-bg-primary: #020617;
-          --color-bg-gradient-from: #0f172a;
-          --color-bg-gradient-via: #1e3a8a;
-          --color-bg-gradient-to: #0f172a;
-          --color-text-primary: #ffffff;
-          --color-text-secondary: #e0f2fe;
-          --color-text-tertiary: #cbd5e1;
-          --color-orb-blue: rgba(59, 130, 246, 0.1);
-          --color-orb-cyan: rgba(6, 182, 212, 0.1);
-          --color-orb-indigo: rgba(99, 102, 241, 0.05);
-          --color-dna-1: rgba(96, 165, 250, 0.5);
-          --color-dna-2: rgba(103, 232, 249, 0.5);
-          --color-card-bg: rgba(30, 41, 59, 0.6);
-          --color-card-border: rgba(71, 85, 105, 1);
-          --color-footer-bg: rgba(15, 23, 42, 0.95);
-        }
-        /* DNA Animation */
-        @keyframes dna-rotate {
-          from { transform: rotateY(0deg); }
-          to { transform: rotateY(360deg); }
-        }
-        .animate-dna-rotate {
-          animation: dna-rotate 20s linear infinite;
-          transform-style: preserve-3d;
-        }
+    <div className={`min-h-screen overflow-x-hidden theme-${theme} orphanova-page`}>
+      <FloatingHeader theme={theme} />
 
-        /* DNA Dots */
-        .dna-dot-1 {
-          background-color: var(--color-dna-1);
-        }
-        .dna-dot-2 {
-          background-color: var(--color-dna-2);
-        }
-      `}</style>
+      <main>
+        <section className="poster-hero">
+          <div className="poster-backdrop" />
 
-      {/* Floating Header */}
-      <FloatingHeader 
-        theme={theme} 
-        onLogoClick={handleOpenChatbot}
-      />
-
-      {/* Hero Content Section with Fixed Background */}
-      <div className="min-h-screen flex items-center justify-center relative">
-        {/* Fixed Background - only in hero */}
-        <div className="fixed inset-0 z-0">
-          <HeroAnimation theme={theme} />
-        </div>
-        
-        {/* Hero Content */}
-        <div className="relative z-10">
-          <HeroSection
-            onSeePlans={handleSeePlans}
-            onTryDemo={handleBookDemo}
-            theme={theme}
-          />
-        </div>
-      </div>
-
-      {/* Spacer to keep Goal section lower, similar to original layout */}
-      <div className="h-16 sm:h-24" />
-
-      {/* Scrollable Content */}
-      <div className="relative z-10">
-
-        <ScrollAnimationWrapper>
-          <MissionSection theme={theme} />
-        </ScrollAnimationWrapper>
-
-        <ScrollAnimationWrapper>
-          <WhyNowSection theme={theme} />
-        </ScrollAnimationWrapper>
-
-        <ScrollAnimationWrapper>
-          <UniqueSection theme={theme} />
-        </ScrollAnimationWrapper>
-
-        <ScrollAnimationWrapper>
-          <LabsSection theme={theme} />
-        </ScrollAnimationWrapper>
-
-        <div id="pricing-section">
-          <ScrollAnimationWrapper>
-            <PricingSection 
-              theme={theme}
-              onTryFree={handleTryFree}
-              onBookCall={handleBookCall}
-            />
-          </ScrollAnimationWrapper>
-        </div>
-        
-        <ScrollAnimationWrapper>
-          <FAQs theme={theme} />
-        </ScrollAnimationWrapper>
-
-        <footer className="py-12 sm:py-20 backdrop-blur-sm" style={{
-          backgroundColor: 'var(--color-footer-bg)',
-          color: 'var(--color-text-primary)'
-        }}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4" style={{ color: 'var(--color-text-primary)' }}>
-              Ready to Accelerate Your Research?
-            </h2>
-            <p className="mb-6 sm:mb-8 max-w-2xl mx-auto text-sm sm:text-base px-2" style={{ color: 'var(--color-text-tertiary)' }}>
-              Try OrphaNova Labs or schedule a personalized call to see how we can accelerate your research.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-stretch sm:items-center px-4">
-              <Button
-                onClick={() => window.open('https://lab.orphanova.com', '_blank')}
-                size="lg"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 sm:px-12 py-5 sm:py-6 text-lg sm:text-xl font-semibold rounded-xl shadow-2xl transform hover:scale-105 transition-all duration-300 w-full sm:w-auto"
+          <div className="mx-auto w-full max-w-[1380px] px-5 sm:px-8 lg:px-10">
+            <div className="poster-grid">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                className="poster-copy"
               >
-                Try It Out
-                <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 ml-2 sm:ml-3" />
-              </Button>
-              <Button
-                onClick={handleBookCall}
-                variant="outline"
-                size="lg"
-                className={`backdrop-blur-sm border-2 border-blue-400 px-8 sm:px-12 py-5 sm:py-6 text-lg sm:text-xl font-semibold rounded-xl w-full sm:w-auto ${
-                  theme === 'dark' 
-                    ? 'bg-white/10 text-white hover:bg-blue-900/50' 
-                    : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
-                }`}
+                <p className="poster-tag">AI scientist for rare diseases</p>
+
+                <h1 className="poster-title">
+                  OrphaNova
+                  <span>takes a disease name from literature to paper draft in minutes, not months.</span>
+                </h1>
+
+                <p className="poster-body">
+                  Validate targets, inspect protein structures, score compounds, design experiments, and draft manuscripts
+                  inside one rare-disease research engine.
+                </p>
+
+                <div className="poster-actions">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="hero-button-primary !h-14 rounded-full !bg-[#d8a04d] !px-8 text-base font-semibold !text-[#0b1323] shadow-[0_18px_40px_rgba(216,160,77,0.22)] hover:!bg-[#e6b25d]"
+                  >
+                    <a href={calendarLink} target="_blank" rel="noopener noreferrer">
+                      Book a demo
+                      <CalendarDays className="ml-2 h-5 w-5" />
+                    </a>
+                  </Button>
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="outline"
+                    className="hero-button-secondary !h-14 rounded-full !border-[#d4e0ea] !bg-[#f5f8fb] !px-8 text-base font-semibold !text-[#09131e] shadow-[0_18px_36px_rgba(2,12,22,0.16)] hover:!bg-[#e3ebf2] [&_svg]:!text-[#6b8196]"
+                  >
+                    <a href={appLink} target="_blank" rel="noopener noreferrer">
+                      Open Labs
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </a>
+                  </Button>
+                </div>
+
+                <div className="poster-metrics">
+                  {heroFacts.map((fact) => (
+                    <div key={fact.value} className="metric-line">
+                      <p className="metric-value">{fact.value}</p>
+                      <p className="metric-copy">{fact.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96, y: 26 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.95, ease: 'easeOut', delay: 0.1 }}
+                className="poster-visual"
               >
-                Schedule a Call!
-              </Button>
+                <BiomedicalHeroVisual />
+                <p className="bio-structure-caption">
+                  Real MeCP2 bound to DNA, a protein complex directly linked to Rett syndrome, a rare neurodevelopmental disease.
+                </p>
+              </motion.div>
             </div>
-            <p className="mt-8 text-sm sm:text-base px-2" style={{ color: 'var(--color-text-tertiary)' }}>
-              If you are an investor interested in learning more about OrphaNova, please reach out via email at{' '}
-              <a 
-                href="mailto:founders@orphanova.com" 
-                className="text-blue-400 hover:text-blue-300 underline"
-              >
-                founders@orphanova.com
-              </a>
-            </p>
           </div>
-        </footer>
+        </section>
 
-        <Footer />
-      </div>
+        <section id="credibility" className="credibility-lane">
+          <div className="mx-auto max-w-[1380px] px-5 sm:px-8 lg:px-10">
+            <div className="credibility-inline">
+              <p className="credibility-prefix">Backed by:</p>
+              <div className="credibility-grid">
+                <div className="credibility-mark">
+                  <img src="/brands/google-for-startups.svg" alt="Google for Startups logo" className="h-8 sm:h-9" />
+                </div>
+                <div className="credibility-mark credibility-mark-nvidia">
+                  <div className="nvidia-inception-lockup">
+                    <img src="/brands/nvidia-symbol.png" alt="NVIDIA logo" className="nvidia-eyemark" />
+                    <span className="nvidia-wordmark">
+                      <strong>NVIDIA</strong>
+                      <em>Inception</em>
+                    </span>
+                  </div>
+                </div>
+                <div className="credibility-mark credibility-mark-yc">
+                  <img src="/brands/yc-mark.svg" alt="Y Combinator logo" className="h-11 w-11 sm:h-12 sm:w-12" />
+                  <span>Developed at YC Bio X AI</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
+        <section className="content-section">
+          <div className="mx-auto max-w-[1380px] px-5 sm:px-8 lg:px-10">
+            <div className="story-grid">
+              <Reveal className="story-copy">
+                <p className="section-kicker">Why this matters</p>
+                <h2 className="section-title">
+                  Rare-disease discovery is still slowed down by fragmented evidence and too many disconnected tools.
+                </h2>
+                <p className="section-copy">
+                  Most rare diseases still have no approved treatment. OrphaNova compresses the path from disease question
+                  to evidence-backed next step across literature, proteins, compounds, and clinical context.
+                </p>
 
-      <NovusChatbotLanding 
-        ref={chatbotRef}
-        theme={theme} 
-        isOpen={showChatbot}
-        onToggle={() => setShowChatbot(!showChatbot)}
-      />
+                <div className="principle-list">
+                  {principles.map((item) => (
+                    <div key={item} className="principle-line">
+                      <ShieldCheck className="h-4 w-4" />
+                      <p>{item}</p>
+                    </div>
+                  ))}
+                </div>
+              </Reveal>
 
-      <DemoBookingModal
-        open={showDemoModal}
-        onOpenChange={setShowDemoModal}
-      />
+              <Reveal className="numbers-stack" delay={0.1}>
+                {heroFacts.map((fact) => (
+                  <div key={fact.value} className="number-line">
+                    <p className="number-value">{fact.value}</p>
+                    <p className="number-label">{fact.label}</p>
+                  </div>
+                ))}
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        <section id="workflow" className="content-section workflow-section">
+          <div className="mx-auto max-w-[1380px] px-5 sm:px-8 lg:px-10">
+            <div className="workflow-layout">
+              <Reveal className="workflow-intro">
+                <p className="section-kicker">Workflow</p>
+                <h2 className="section-title">From prompt to paper, without breaking the research thread.</h2>
+                <p className="section-copy">
+                  One pipeline ties discovery, validation, experiment planning, and writing together so scientific context
+                  survives from the first question to the final draft.
+                </p>
+                <a
+                  href={calendarLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="workflow-link"
+                >
+                  See the workflow in a live demo
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              </Reveal>
+
+              <div className="workflow-list">
+                {workflowSteps.map((step, index) => {
+                  const Icon = step.icon;
+                  return (
+                    <Reveal key={step.number} className="workflow-row" delay={index * 0.06}>
+                      <div className="workflow-index">{step.number}</div>
+                      <div className="workflow-copy">
+                        <div className="workflow-step-head">
+                          <div className="workflow-icon">
+                            <Icon className="h-4 w-4" />
+                          </div>
+                          <h3>{step.title}</h3>
+                        </div>
+                        <p>{step.text}</p>
+                      </div>
+                    </Reveal>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="stack" className="content-section stack-section">
+          <div className="mx-auto max-w-[1380px] px-5 sm:px-8 lg:px-10">
+            <Reveal className="stack-intro">
+              <p className="section-kicker">Scientific stack</p>
+              <h2 className="section-title">Research infrastructure already trusted across biotech and translational science.</h2>
+              <p className="section-copy">
+                OrphaNova connects into the databases, structural biology tools, molecule references, and scientific
+                illustration platforms researchers already use to make decisions.
+              </p>
+            </Reveal>
+
+            <Reveal className="logo-band" delay={0.08}>
+              <div className="logo-band-mask">
+                <div className="logo-band-track">
+                  {tickerLogos.map((item, index) => (
+                    <div key={`${item.name}-${index}`} className="logo-band-item">
+                      {item.kind === 'image' ? (
+                        <img src={item.src} alt={item.alt} className={item.className} />
+                      ) : (
+                        <div className={`logo-lockup logo-lockup--${item.variant}`}>
+                          {item.variant === 'tamarind' ? (
+                            <>
+                              <img src="/brands/tamarind-mark.svg" alt="Tamarind Bio logo" className="logo-lockup-mark h-6 w-6" />
+                              <span className="logo-lockup-text">Tamarind Bio</span>
+                            </>
+                          ) : item.variant === 'alphafold' ? (
+                            <>
+                              <img src="/brands/alphafold-favicon.png" alt="AlphaFold logo" className="logo-lockup-mark h-6 w-6" />
+                              <span className="logo-lockup-text">
+                                AlphaFold <span className="logo-lockup-subtle">DB</span>
+                              </span>
+                            </>
+                          ) : item.variant === 'pubmed' ? (
+                            <span className="logo-wordmark logo-wordmark--pubmed">PubMed</span>
+                          ) : (
+                            <span className="logo-wordmark logo-wordmark--clinicaltrials">ClinicalTrials.gov</span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal className="stack-footnote" delay={0.12}>
+              Including literature search, target intelligence, structure prediction, compound search, study context, and scientific illustration.
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="content-section capability-section">
+          <div className="mx-auto max-w-[1380px] px-5 sm:px-8 lg:px-10">
+            <div className="capability-grid">
+              {capabilities.map((item, index) => (
+                <Reveal key={item.title} className="capability-column" delay={index * 0.05}>
+                  <p className="section-kicker">Capability 0{index + 1}</p>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <FAQs theme={theme} />
+
+        <section id="contact" className="content-section">
+          <div className="mx-auto max-w-[1380px] px-5 sm:px-8 lg:px-10">
+            <Reveal className="cta-shell">
+              <div className="cta-copy">
+                <p className="section-kicker">Next step</p>
+                <h2 className="section-title">See how one rare-disease prompt becomes a research-ready plan.</h2>
+                <p className="section-copy">
+                  Book a walkthrough to see the full research pipeline in action, or open Labs and explore the product
+                  surface directly.
+                </p>
+
+                <div className="cta-actions">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="hero-button-primary !h-14 rounded-full !bg-[#d8a04d] !px-8 text-base font-semibold !text-[#0b1323] shadow-[0_18px_40px_rgba(216,160,77,0.22)] hover:!bg-[#e6b25d]"
+                  >
+                    <a href={calendarLink} target="_blank" rel="noopener noreferrer">
+                      Book a demo
+                      <CalendarDays className="ml-2 h-5 w-5" />
+                    </a>
+                  </Button>
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="outline"
+                    className="hero-button-secondary !h-14 rounded-full !border-[#d4e0ea] !bg-[#f5f8fb] !px-8 text-base font-semibold !text-[#09131e] shadow-[0_18px_36px_rgba(2,12,22,0.16)] hover:!bg-[#e3ebf2] [&_svg]:!text-[#6b8196]"
+                  >
+                    <a href={appLink} target="_blank" rel="noopener noreferrer">
+                      Open Labs
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </a>
+                  </Button>
+                </div>
+              </div>
+
+              <div className="cta-visual" aria-hidden="true">
+                <div className="cta-visual-ring cta-visual-ring--outer" />
+                <div className="cta-visual-ring cta-visual-ring--mid" />
+                <div className="cta-visual-ring cta-visual-ring--inner" />
+                <span className="cta-signal cta-signal--one" />
+                <span className="cta-signal cta-signal--two" />
+                <span className="cta-signal cta-signal--three" />
+                <span className="cta-signal cta-signal--four" />
+                <div className="cta-logo-wrap">
+                  <img src="/brands/orphanova-lens.png" alt="" className="cta-logo-mark" />
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
     </div>
   );
 }

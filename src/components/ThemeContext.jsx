@@ -1,15 +1,14 @@
 import { createContext, useContext } from 'react';
 
 const ThemeContext = createContext();
+const orphanovaLogo = '/brands/orphanova-lens.png';
 
 export function ThemeProvider({ children }) {
   const theme = 'dark';
   const toggleTheme = () => {};
 
   const getLogo = () => {
-    return theme === 'dark'
-      ? 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/690a1389568b31dc5bffd62d/ee6ddf117_ChatGPTImageNov12202509_01_55PM.png'
-      : 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/690a1389568b31dc5bffd62d/af115b481_OrphaNovaHealthcareStartupLogo4.png';
+    return orphanovaLogo;
   };
 
   return (
