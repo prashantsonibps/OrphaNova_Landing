@@ -671,6 +671,11 @@
     padding-top: 0.08rem;
   }
 
+  .credibility-mark-canopy {
+    min-width: 0;
+    padding-top: 0.08rem;
+  }
+
   .credibility-mark img {
     display: block;
     width: auto;
@@ -683,6 +688,20 @@
     gap: 0.82rem;
   }
 
+  .canopy-founders-lockup {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.82rem;
+  }
+
+  .canopy-mark {
+    width: 2.18rem;
+    height: 1.92rem;
+    flex: none;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 22px rgba(2, 8, 18, 0.22));
+  }
+
   .nvidia-eyemark {
     width: 2.18rem;
     height: 1.92rem;
@@ -692,6 +711,7 @@
   }
 
   .nvidia-inception-lockup span,
+  .canopy-founders-lockup span,
   .credibility-mark-yc span {
     color: #dbe5f2;
     font-size: 0.94rem;
@@ -700,6 +720,15 @@
   }
 
   .nvidia-wordmark {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.08rem;
+    line-height: 0.96;
+    white-space: nowrap;
+  }
+
+  .canopy-wordmark {
     display: inline-flex;
     flex-direction: column;
     align-items: flex-start;
@@ -721,23 +750,23 @@
     font-size: 0.86rem;
   }
 
+  .canopy-wordmark strong {
+    color: #f5f9ff;
+    font-size: 0.94rem;
+    letter-spacing: 0.02em;
+  }
+
+  .canopy-wordmark em {
+    color: #c7d7ec;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 0.86rem;
+  }
+
   .credibility-mark-yc {
     display: inline-flex;
     align-items: center;
     gap: 0.95rem;
-  }
-
-  .credibility-mark-founders {
-    min-height: 3.5rem;
-    padding: 0.2rem 0;
-  }
-
-  .founders-inc-logo {
-    display: block;
-    width: auto;
-    height: 2.35rem;
-    object-fit: contain;
-    filter: drop-shadow(0 10px 22px rgba(2, 8, 18, 0.24));
   }
 
   .credibility-mark-yc img {

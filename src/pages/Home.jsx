@@ -227,6 +227,15 @@ function HomeContent() {
             <div className="credibility-inline">
               <p className="credibility-prefix">Backed by:</p>
               <div className="credibility-grid">
+                <div className="credibility-mark credibility-mark-canopy">
+                  <div className="canopy-founders-lockup">
+                    <img src="/brands/founders-inc.png" alt="Canopy logo" className="canopy-mark" />
+                    <span className="canopy-wordmark">
+                      <strong>Founders</strong>
+                      <em>Inc.</em>
+                    </span>
+                  </div>
+                </div>
                 <div className="credibility-mark">
                   <img src="/brands/google-for-startups.svg" alt="Google for Startups logo" className="h-8 sm:h-9" />
                 </div>
@@ -238,9 +247,6 @@ function HomeContent() {
                       <em>Inception</em>
                     </span>
                   </div>
-                </div>
-                <div className="credibility-mark credibility-mark-founders">
-                  <img src="/brands/founders-inc.png" alt="Founders, Inc logo" className="founders-inc-logo" />
                 </div>
                 <div className="credibility-mark credibility-mark-yc">
                   <img src="/brands/yc-mark.svg" alt="Y Combinator logo" className="h-11 w-11 sm:h-12 sm:w-12" />
