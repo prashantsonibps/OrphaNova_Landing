@@ -3,22 +3,21 @@ import * as THREE from 'three';
 
 export default function HeroAnimation({ theme }) {
   const containerRef = useRef(null);
-  const sceneRef = useRef(null);
   const isDark = theme === 'dark';
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current) return undefined;
+    const mountNode = containerRef.current;
 
     // Scene setup
     const scene = new THREE.Scene();
-    sceneRef.current = scene;
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 40;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 0);
-    containerRef.current.appendChild(renderer.domElement);
+    mountNode.appendChild(renderer.domElement);
 
     // Central lens - soft rotating glow (very faint)
     const lensGeometry = new THREE.RingGeometry(10, 12, 64);
@@ -124,8 +123,9 @@ export default function HeroAnimation({ theme }) {
     let startTime = Date.now();
 
     // Animation loop
+    let frameId;
     function animate() {
-      requestAnimationFrame(animate);
+      frameId = requestAnimationFrame(animate);
       const elapsed = Date.now() - startTime;
       const seconds = elapsed / 1000;
 
@@ -231,12 +231,13 @@ export default function HeroAnimation({ theme }) {
     // Cleanup
     return () => {
       window.removeEventListener('resize', handleResize);
-      if (containerRef.current && renderer.domElement) {
-        containerRef.current.removeChild(renderer.domElement);
+      window.cancelAnimationFrame(frameId);
+      if (mountNode.contains(renderer.domElement)) {
+        mountNode.removeChild(renderer.domElement);
       }
       renderer.dispose();
     };
-  }, [theme]);
+  }, [isDark]);
 
   return (
     <div 

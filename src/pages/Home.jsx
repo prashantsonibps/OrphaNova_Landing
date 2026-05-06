@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, CalendarDays, FileText, FlaskConical, Network, Search, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import FloatingHeader from '../components/landing/FloatingHeader';
 import Footer from '../components/landing/Footer';
 import FAQs from '../components/landing/FAQs';
-import BiomedicalHeroVisual from '../components/landing/BiomedicalHeroVisual';
 import { ThemeProvider, useTheme } from '../components/ThemeContext';
 import FaviconUpdater from '../components/FaviconUpdater';
+
+const BiomedicalHeroVisual = lazy(() => import('../components/landing/BiomedicalHeroVisual'));
 
 const calendarLink = 'https://calendar.notion.so/meet/prashantsonibps/pkxx64o8n';
 const appLink = 'https://lab.orphanova.com';
@@ -210,7 +211,9 @@ function HomeContent() {
                 transition={{ duration: 0.95, ease: 'easeOut', delay: 0.1 }}
                 className="poster-visual"
               >
-                <BiomedicalHeroVisual />
+                <Suspense fallback={<div className="bio-visual-placeholder" aria-hidden="true" />}>
+                  <BiomedicalHeroVisual />
+                </Suspense>
                 <p className="bio-structure-caption">
                   Real MeCP2 bound to DNA, a protein complex directly linked to Rett syndrome, a rare neurodevelopmental disease.
                 </p>

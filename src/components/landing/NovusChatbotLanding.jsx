@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, Send, MessageCircle, Sparkles, Bot } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,7 @@ export default function NovusChatbotLanding({ theme, isOpen: controlledIsOpen, o
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
   const idleTimerRef = useRef(null);
+  const hasBootstrappedRef = useRef(false);
   const isDark = theme === 'dark';
 
   const scrollToBottom = () => {
@@ -23,16 +24,31 @@ export default function NovusChatbotLanding({ theme, isOpen: controlledIsOpen, o
     scrollToBottom();
   }, [messages]);
 
+  const addBotMessage = useCallback((text) => {
+    setIsTyping(true);
+    setTimeout(() => {
+      setMessages((prev) => [...prev, { text, sender: 'bot' }]);
+      setIsTyping(false);
+    }, 800);
+  }, []);
+
   useEffect(() => {
-    if (isOpen && messages.length === 0) {
-      setTimeout(() => {
+    if (isOpen && !hasBootstrappedRef.current) {
+      hasBootstrappedRef.current = true;
+      let followupTimer;
+      const welcomeTimer = setTimeout(() => {
         addBotMessage("Hi! I'm Novus, your AI research collaborator. 👋\n\nWe're on a mission to accelerate cures for 400 million patients with rare diseases.");
-        setTimeout(() => {
+        followupTimer = setTimeout(() => {
           addBotMessage("I can tell you about:\n• What OrphaNova does\n• Our mission and vision\n• How our platform works\n• Pricing and plans\n• Connect you with our makers\n\nWhat would you like to know?");
         }, 1500);
       }, 500);
+      return () => {
+        clearTimeout(welcomeTimer);
+        clearTimeout(followupTimer);
+      };
     }
-  }, [isOpen]);
+    return undefined;
+  }, [addBotMessage, isOpen]);
 
   useEffect(() => {
     if (isOpen && messages.length > 0) {
@@ -42,15 +58,7 @@ export default function NovusChatbotLanding({ theme, isOpen: controlledIsOpen, o
       }, 45000);
     }
     return () => clearTimeout(idleTimerRef.current);
-  }, [messages, isOpen]);
-
-  const addBotMessage = (text) => {
-    setIsTyping(true);
-    setTimeout(() => {
-      setMessages(prev => [...prev, { text, sender: 'bot' }]);
-      setIsTyping(false);
-    }, 800);
-  };
+  }, [addBotMessage, messages, isOpen]);
 
   const handleSend = () => {
     if (!inputValue.trim()) return;

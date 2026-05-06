@@ -391,6 +391,18 @@
     aspect-ratio: 1 / 1;
   }
 
+  .bio-visual-placeholder {
+    width: min(100%, 46rem);
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 40% 35%, rgba(132, 224, 247, 0.16), transparent 38%),
+      radial-gradient(circle at 68% 62%, rgba(216, 160, 77, 0.12), transparent 42%),
+      radial-gradient(circle at center, rgba(18, 36, 58, 0.78), rgba(6, 14, 26, 0.92));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 24px 64px rgba(1, 9, 18, 0.28);
+  }
+
   .bio-hero-visual--interactive {
     filter: drop-shadow(0 32px 88px rgba(1, 9, 18, 0.38));
   }
@@ -723,7 +735,7 @@
   .founders-inc-logo {
     display: block;
     width: auto;
-    height: 2.15rem;
+    height: 2.35rem;
     object-fit: contain;
     filter: drop-shadow(0 10px 22px rgba(2, 8, 18, 0.24));
   }
@@ -808,8 +820,7 @@
     display: block;
     width: 100%;
     height: auto;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
+    object-fit: contain;
   }
 
   .insight-graph-fallback {
