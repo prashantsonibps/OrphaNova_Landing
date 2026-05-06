@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, CalendarDays, FileText, FlaskConical, Network, Search, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,12 @@ const heroFacts = [
   { value: '400M+', label: 'patients living with rare diseases worldwide' },
   { value: '7,000+', label: 'conditions still waiting for focused drug discovery' },
   { value: 'Minutes', label: 'from disease prompt to paper-ready direction' },
+];
+
+const proofFacts = [
+  { value: '8,000+', label: 'rare diseases navigable from one shared research surface' },
+  { value: '5+', label: 'major scientific data ecosystems connected in one workflow' },
+  { value: '1', label: 'continuous thread from prompt to hypothesis, experiment, and draft' },
 ];
 
 const principles = [
@@ -133,6 +139,7 @@ function Reveal({ children, className = '', delay = 0 }) {
 
 function HomeContent() {
   const { theme } = useTheme();
+  const [graphLoadFailed, setGraphLoadFailed] = useState(false);
   const tickerLogos = [...integrations, ...integrations];
 
   return (
@@ -229,6 +236,9 @@ function HomeContent() {
                     </span>
                   </div>
                 </div>
+                <div className="credibility-mark credibility-mark-founders">
+                  <img src="/brands/founders-inc.png" alt="Founders, Inc logo" className="founders-inc-logo" />
+                </div>
                 <div className="credibility-mark credibility-mark-yc">
                   <img src="/brands/yc-mark.svg" alt="Y Combinator logo" className="h-11 w-11 sm:h-12 sm:w-12" />
                   <span>Developed at YC Bio X AI</span>
@@ -262,7 +272,22 @@ function HomeContent() {
               </Reveal>
 
               <Reveal className="numbers-stack" delay={0.1}>
-                {heroFacts.map((fact) => (
+                <figure className="insight-graph">
+                  {!graphLoadFailed ? (
+                    <img
+                      src="/images/rare-disease-trends.png"
+                      alt="Rare-disease R&D trends graph showing funding, clinical trials, and FDA orphan drug approvals"
+                      loading="lazy"
+                      onError={() => setGraphLoadFailed(true)}
+                    />
+                  ) : (
+                    <div className="insight-graph-fallback">
+                      <img src="/brands/orphanova-lens.png" alt="" aria-hidden="true" />
+                      <p>Graph image missing. Add file to <code>public/images/rare-disease-trends.png</code>.</p>
+                    </div>
+                  )}
+                </figure>
+                {proofFacts.map((fact) => (
                   <div key={fact.value} className="number-line">
                     <p className="number-value">{fact.value}</p>
                     <p className="number-label">{fact.label}</p>

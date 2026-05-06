@@ -58,6 +58,7 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   body {
@@ -75,6 +76,7 @@
     color: #f8f5ee;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
   #root {
@@ -215,7 +217,7 @@
 
   .poster-hero {
     position: relative;
-    min-height: 100svh;
+    min-height: min(100svh, 980px);
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -713,6 +715,19 @@
     gap: 0.95rem;
   }
 
+  .credibility-mark-founders {
+    min-height: 3.5rem;
+    padding: 0.2rem 0;
+  }
+
+  .founders-inc-logo {
+    display: block;
+    width: auto;
+    height: 2.15rem;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 22px rgba(2, 8, 18, 0.24));
+  }
+
   .credibility-mark-yc img {
     flex: none;
   }
@@ -723,6 +738,7 @@
 
   .content-section {
     padding: clamp(4.5rem, 8vw, 7.5rem) 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
   }
 
   .story-grid {
@@ -730,6 +746,10 @@
     gap: clamp(2rem, 5vw, 5rem);
     grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.72fr);
     align-items: start;
+  }
+
+  .story-copy .section-title {
+    max-width: 12ch;
   }
 
   .section-title {
@@ -768,14 +788,59 @@
 
   .numbers-stack {
     display: grid;
-    gap: 1.4rem;
+    gap: 1.1rem;
     align-self: end;
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    padding-left: 1.25rem;
+  }
+
+  .insight-graph {
+    margin: 0 0 0.1rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 1rem;
+    overflow: hidden;
+    background: rgba(10, 18, 30, 0.7);
+    width: min(100%, 40rem);
+    justify-self: stretch;
+  }
+
+  .insight-graph img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .insight-graph-fallback {
+    min-height: 12.5rem;
+    display: grid;
+    place-items: center;
+    gap: 0.6rem;
+    padding: 1rem;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(8, 16, 28, 0.92), rgba(9, 18, 30, 0.78));
+  }
+
+  .insight-graph-fallback img {
+    width: 2.2rem;
+    height: 2.2rem;
+    opacity: 0.9;
+  }
+
+  .insight-graph-fallback p {
+    margin: 0;
+    color: #b7c6da;
+    font-size: 0.78rem;
+    line-height: 1.4;
   }
 
   .workflow-section {
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    background: linear-gradient(180deg, rgba(58, 154, 181, 0.05), rgba(255, 255, 255, 0));
+    background:
+      radial-gradient(circle at 18% 15%, rgba(216, 160, 77, 0.05), transparent 22%),
+      linear-gradient(180deg, rgba(58, 154, 181, 0.04), rgba(255, 255, 255, 0));
   }
 
   .workflow-layout {
@@ -850,14 +915,14 @@
   .workflow-copy p,
   .capability-column p {
     margin-top: 0.9rem;
-    color: #aab7ca;
+    color: #b8c5d8;
     line-height: 1.75;
   }
 
   .stack-section {
     background:
-      radial-gradient(circle at 12% 18%, rgba(216, 160, 77, 0.04), transparent 16%),
-      radial-gradient(circle at 82% 24%, rgba(80, 199, 230, 0.08), transparent 22%),
+      radial-gradient(circle at 12% 18%, rgba(216, 160, 77, 0.03), transparent 16%),
+      radial-gradient(circle at 82% 24%, rgba(80, 199, 230, 0.06), transparent 22%),
       linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
   }
 
@@ -1409,10 +1474,12 @@
   .poster-hero {
     min-height: auto;
     padding-top: 7.5rem;
+    padding-bottom: 2.6rem;
   }
 
   .poster-title span {
-    font-size: 1.35rem;
+    font-size: 1.18rem;
+    line-height: 1.2;
   }
 
   .poster-metrics,
@@ -1422,7 +1489,7 @@
   }
 
   .poster-visual {
-    min-height: 31rem;
+    min-height: 24rem;
   }
 
   .bio-structure-caption {
@@ -1439,7 +1506,7 @@
   }
 
   .bio-canvas-shell {
-    inset: 7%;
+    inset: 13%;
   }
 
   .bio-interaction-hint {
@@ -1453,11 +1520,15 @@
 
   .logo-band-track {
     gap: 0.1rem;
-    animation-duration: 20s;
+    animation: none;
+    transform: translateX(0) !important;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .logo-band-item img {
-    max-width: 10rem;
+    max-width: 8.5rem;
   }
 
   .logo-lockup {
@@ -1506,5 +1577,38 @@
   .footer-socials,
   .footer-actions {
     width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .workflow-intro {
+    top: auto;
+  }
+
+  .cta-visual {
+    min-height: 13rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .logo-band-track,
+  .bio-shell-ring-one,
+  .bio-shell-ring-two,
+  .bio-shell-ring-three,
+  .cta-logo-wrap,
+  .cta-signal {
+    animation: none !important;
   }
 }
