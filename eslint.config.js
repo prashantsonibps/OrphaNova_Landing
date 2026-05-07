@@ -40,4 +40,10 @@ export default [
       ],
     },
   },
+  {
+    files: ['src/components/ui/**/*.jsx', 'src/components/ThemeContext.jsx'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ]

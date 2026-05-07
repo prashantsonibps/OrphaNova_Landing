@@ -284,7 +284,7 @@ function HomeContent() {
                 <figure className="insight-graph">
                   {!graphLoadFailed ? (
                     <img
-                      src="/images/rare-disease-trends.png"
+                      src="/images/rare-disease-trends.jpg"
                       alt="Rare-disease R&D trends graph showing funding, clinical trials, and FDA orphan drug approvals"
                       loading="lazy"
                       onError={() => setGraphLoadFailed(true)}
@@ -292,7 +292,7 @@ function HomeContent() {
                   ) : (
                     <div className="insight-graph-fallback">
                       <img src="/brands/orphanova-lens.png" alt="" aria-hidden="true" />
-                      <p>Graph image missing. Add file to <code>public/images/rare-disease-trends.png</code>.</p>
+                      <p>Graph image missing. Add file to <code>public/images/rare-disease-trends.jpg</code>.</p>
                     </div>
                   )}
                 </figure>
