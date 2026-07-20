@@ -119,7 +119,7 @@ export default function NovusChatbotLanding({ theme, isOpen: controlledIsOpen, o
     if (input.includes('connect') || input.includes('talk') || input.includes('meet') || input.includes('contact') || input.includes('call') || input.includes('schedule') || input.includes('book')) {
       addBotMessage("Perfect! Let me connect you with our makers right now.\n\nThey're excited to show you how OrphaNova can accelerate your research. 🚀\n\nOpening the calendar...");
       setTimeout(() => {
-        window.open('https://calendar.notion.so/meet/prashantsonibps/pkxx64o8n', '_blank');
+        window.open('https://calendar.notion.so/meet/prashantsonibps/q47pq4wf3', '_blank');
       }, 1500);
       return;
     }

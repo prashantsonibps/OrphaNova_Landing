@@ -10,7 +10,7 @@ import FaviconUpdater from '../components/FaviconUpdater';
 
 const BiomedicalHeroVisual = lazy(() => import('../components/landing/BiomedicalHeroVisual'));
 
-const calendarLink = 'https://calendar.notion.so/meet/prashantsonibps/pkxx64o8n';
+const calendarLink = 'https://calendar.notion.so/meet/prashantsonibps/q47pq4wf3';
 const appLink = 'https://lab.orphanova.com';
 
 const heroFacts = [

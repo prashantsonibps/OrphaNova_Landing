@@ -60,7 +60,7 @@ export default function Footer() {
           <div className="footer-actions">
             <Button asChild size="sm" variant="ghost" className="header-secondary-button">
               <a
-                href="https://calendar.notion.so/meet/prashantsonibps/pkxx64o8n"
+                href="https://calendar.notion.so/meet/prashantsonibps/q47pq4wf3"
                 target="_blank"
                 rel="noopener noreferrer"
               >

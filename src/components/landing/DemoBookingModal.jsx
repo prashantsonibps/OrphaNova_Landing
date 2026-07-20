@@ -63,7 +63,7 @@ export default function DemoBookingModal({ open, onOpenChange }) {
 
   const handleBookDemo = () => {
     // In the future we could append this info to a query param or send to an API.
-    window.open('https://calendar.notion.so/meet/prashantsonibps/pkxx64o8n', '_blank');
+    window.open('https://calendar.notion.so/meet/prashantsonibps/q47pq4wf3', '_blank');
     handleClose(false);
   };
 

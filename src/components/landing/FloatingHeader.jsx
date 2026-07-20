@@ -62,7 +62,7 @@ export default function FloatingHeader({ theme }) {
               className="header-secondary-button hidden sm:inline-flex"
             >
               <a
-                href="https://calendar.notion.so/meet/prashantsonibps/pkxx64o8n"
+                href="https://calendar.notion.so/meet/prashantsonibps/q47pq4wf3"
                 target="_blank"
                 rel="noopener noreferrer"
               >
